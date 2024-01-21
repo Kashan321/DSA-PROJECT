@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&family=Sevillana&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: system-ui;
+}
+.navbar{
+    margin-top: 20px;
+    height: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.logo{
+    font-size: 20px;
+    font-weight: 700;
+}
+.nav-items ul li{
+    list-style: none;
+    display: inline-flex;
+    margin: 5px;
+}
+.page1{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.text{
+    display: block;
+    /* flex-direction: column; */
+}
+.text h1{
+    font-size: 35px;
+}
+#srch{
+    padding: 13px;
+    font-size: 15px;
+    height: 35px;
+    width: 300px;
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.search{
+    display: flex;
+    margin: 14px 14px;
+}
+.srch-btn{
+    margin: 0 5px;
+    padding: 6px;
+    font-size: 15px;
+    border: 1px solid black;
+    border-radius: 50% ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.srch-btn img{
+    height: 20px;
+    width: 20px;
+}
+/* page 2 css */
+.page2{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+}
+.left{
+    height: 100%;
+    width: 50%;
+    /* background-color: #fe6161; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+#txt-area{
+    height: 148px;
+    width: 405px;
+    padding: 10px;
+    border-radius: 30px;
+}
+.right{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.right img{
+    height: 220px;
+    width: 220px;
+}
+
+/* page 3 css */
+
+.page3{
+    height: 70vh;
+    width: 100%;
+    /* background-color: #f78e8e; */
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+blockquote{
+    width: 800px;
+    font-size: 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+quote{
+    font-family: 'Playfair Display', serif;
+}
+
+/* footer css */
+footer{
+    height: 80vh;
+    width: 100%;
+    background-color: #2c2727da;
+}

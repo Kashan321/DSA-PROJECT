@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Explorer Simulation</title>
+    <link rel="stylesheet" href="project.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="nav-bar">
+            <div class="logo">DSA PROJECT </div>
+            <div class="nav-items">
+                <ul>
+                    <li>HOME</li>
+                    <li>ABOUT</li>
+                    <li>CONTACT</li>
+                </ul>
+            </div>
+        </div>
+        <h1 class="main-txt">FILE EXPLORER SIMULATION</h1>
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <!-- Custom folder icon -->
+            <symbol id="custom-folder-icon" viewBox="0 0  24">
+                <path d="M18 5H0v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5Zm-7.258-2L9.092.8a2.009 2.009 0 0 0-1.6-.8H2.049a2 2 0 0 0-2 2v1h10.693Z" />
+            </symbol>
+
+            <!-- Custom file icon -->
+            <symbol id="custom-file-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14H11V7h2v9z" />
+            </symbol>
+        </svg>
+        <div id="file-explorer">
+            <input type="text" id="srch-bar" placeholder="Search Files Here...">
+            <button type="submit" class="srch-btn" onclick="searchFiles()"><img src="./images/right_6407139.png" alt=""></button>
+            <div id="back-button" onclick="goBack()"><img src="./images/arrow.png" alt=""></div>
+            <div id="breadcrumbs"></div>
+            <div id="current-folder"></div>
+            <ul id="folder-contents"></ul>
+        </div>
+    </div>
+    <div class="about">
+        <div class="usama">
+            <img src="./images/usama.jpg" class="usama-img" alt="">
+            <h1><span>NAME: </span> USAMA BIN ASIF</h1>
+            <h2><span>ID: </span> F2022462035</h2>
+        </div>
+        <div class="kashan">
+            <img src="./images/WhatsApp Image 2023-12-29 at 14.35.38_6e53a8ea.jpg" class="usama-img" alt="">
+            <h1><span>NAME: </span> MUHAMMAD KASHAN HAIDER</h1>
+            <h2><span>ID: </span> F2022462035</h2>
+        </div>
+    </div>
+    <footer>
+        <h1>THANKS FOR VISITING</h1>
+    </footer>
+    <script>
+        const fileSystemData = {
+            name: 'root',
+            type: 'folder',
+            children: [
+                {
+                    name: 'Documents',
+                    type: 'folder',
+                    children: [
+                        { name: 'File1.txt', type: 'file' },
+                        { name: 'File2.docx', type: 'file' }
+                    ]
+                },
+                {
+                    name: 'Pictures',
+                    type: 'folder',
+                    children: [
+                        { name: 'Image1.jpg', type: 'file' },
+                        { name: 'Image2.png', type: 'file' }
+                    ]
+                },
+                {
+                    name: 'MUSIC',
+                    type: 'folder',
+                    children: [
+                        { name: 'Image1.mp3', type: 'file' },
+                        { name: 'Image2.mp3', type: 'file' }
+                    ]
+                },
+                {
+                    name: 'Study Material',
+                    type: 'folder',
+                    children: [
+                        { name: 'l1.pptx', type: 'file' },
+                    ]
+                },
+                {
+                    name: 'OBB Files',
+                    type: 'folder',
+                    children: [
+                        { name: 'Image1.jpg', type: 'file' },
+                        { name: 'Image2.png', type: 'file' }
+                    ]
+                },
+                {
+                    name: 'Downloads',
+                    type: 'folder',
+                    children: [
+                        { name: 'Image1.jpg', type: 'file' },
+                        { name: 'Image2.png', type: 'file' }
+                    ]
+                },
+                // Add more folders and files as needed
+            ]
+        };
+
+        const fileExplorer = document.getElementById('file-explorer');
+        const backBtn = document.getElementById('back-button');
+        const breadcrumbs = document.getElementById('breadcrumbs');
+        const currentFolder = document.getElementById('current-folder');
+        const folderContents = document.getElementById('folder-contents');
+        let currentPath = [];
+
+        function renderFileSystem(data, path = []) {
+            // Clear existing content
+            breadcrumbs.innerHTML = '';
+            folderContents.innerHTML = '';
+
+            // Display Back Button (if not in root)
+            backBtn.style.display = path.length > 0 ? 'block' : 'none';
+
+            // Display Breadcrumbs
+            path.forEach((folder, index) => {
+                const breadcrumb = document.createElement('span');
+                breadcrumb.className = 'breadcrumb';
+                breadcrumb.innerHTML = `<svg class="icon" width="36" height="36" style="margin-bottom: -2px;"><use xlink:href="#custom-folder-icon"></use></svg>${folder}`;
+                breadcrumb.addEventListener('click', () => navigateToFolder(path.slice(0, index + 1)));
+                breadcrumbs.appendChild(breadcrumb);
+
+                if (index < path.length - 1) {
+                    breadcrumbs.innerHTML += ' / ';
+                }
+            });
+
+            // Display Current Folder
+            currentFolder.textContent = `Current Folder: ${path.length > 0 ? path[path.length - 1] : 'root'}`;
+
+            // Display Folder Contents
+            data.children.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = item.type === 'folder' ? 'folder-item' : 'file-item';
+                const iconType = item.type === 'folder' ? 'custom-folder-icon' : 'custom-file-icon';
+                listItem.innerHTML = `<svg class="icon" width="24" height="24"><use xlink:href="#${iconType}"></use></svg>${item.name}`;
+                listItem.addEventListener('click', () => handleItemClick(item, path));
+                folderContents.appendChild(listItem);
+            });
+        }
+
+        function handleItemClick(item, path) {
+            if (item.type === 'folder') {
+                navigateToFolder([...path, item.name]);
+            } else {
+                // Implement logic for handling file clicks (open, download, etc.)
+                console.log(`File Clicked: ${item.name}`);
+            }
+        }
+
+        function navigateToFolder(path) {
+            currentPath = path;
+            const folder = navigateFilesystem(fileSystemData, path);
+            renderFileSystem(folder, path);
+        }
+
+        function navigateFilesystem(data, path) {
+            let current = data;
+            for (const folder of path) {
+                current = current.children.find(item => item.type === 'folder' && item.name === folder);
+            }
+            return current || data; // Return the root if the path is invalid
+        }
+
+        function goBack() {
+            if (currentPath.length > 0) {
+                const newPath = currentPath.slice(0, -1);
+                navigateToFolder(newPath);
+            }
+        }
+
+        function searchFiles() {
+            const searchQuery = document.getElementById('srch-bar').value.toLowerCase();
+            const filteredData = filterFileSystem(fileSystemData, searchQuery);
+            renderFileSystem(filteredData, currentPath);
+        }
+
+        function filterFileSystem(data, query) {
+            const filteredChildren = data.children.filter(item =>
+                item.name.toLowerCase().includes(query) ||
+                (item.type === 'folder' && filterFileSystem(item, query).children.length > 0)
+            );
+
+            return { ...data, children: filteredChildren };
+        }
+
+        // Initial rendering
+        renderFileSystem(fileSystemData);
+    </script>
+
+
+</body>
+
+</html>
