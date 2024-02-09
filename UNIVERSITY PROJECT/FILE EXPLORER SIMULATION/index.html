@@ -22,12 +22,12 @@
         </div>
         <h1 class="main-txt">FILE EXPLORER SIMULATION</h1>
         <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-            <!-- Custom folder icon -->
+            
             <symbol id="custom-folder-icon" viewBox="0 0  24">
                 <path d="M18 5H0v11a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5Zm-7.258-2L9.092.8a2.009 2.009 0 0 0-1.6-.8H2.049a2 2 0 0 0-2 2v1h10.693Z" />
             </symbol>
 
-            <!-- Custom file icon -->
+            
             <symbol id="custom-file-icon" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14H11V7h2v9z" />
             </symbol>
@@ -108,7 +108,7 @@
                         { name: 'Image2.png', type: 'file' }
                     ]
                 },
-                // Add more folders and files as needed
+                
             ]
         };
 
@@ -120,14 +120,14 @@
         let currentPath = [];
 
         function renderFileSystem(data, path = []) {
-            // Clear existing content
+            
             breadcrumbs.innerHTML = '';
             folderContents.innerHTML = '';
 
-            // Display Back Button (if not in root)
+           
             backBtn.style.display = path.length > 0 ? 'block' : 'none';
 
-            // Display Breadcrumbs
+            
             path.forEach((folder, index) => {
                 const breadcrumb = document.createElement('span');
                 breadcrumb.className = 'breadcrumb';
@@ -140,10 +140,10 @@
                 }
             });
 
-            // Display Current Folder
+            
             currentFolder.textContent = `Current Folder: ${path.length > 0 ? path[path.length - 1] : 'root'}`;
 
-            // Display Folder Contents
+            
             data.children.forEach(item => {
                 const listItem = document.createElement('li');
                 listItem.className = item.type === 'folder' ? 'folder-item' : 'file-item';
@@ -158,7 +158,7 @@
             if (item.type === 'folder') {
                 navigateToFolder([...path, item.name]);
             } else {
-                // Implement logic for handling file clicks (open, download, etc.)
+               
                 console.log(`File Clicked: ${item.name}`);
             }
         }
@@ -174,7 +174,7 @@
             for (const folder of path) {
                 current = current.children.find(item => item.type === 'folder' && item.name === folder);
             }
-            return current || data; // Return the root if the path is invalid
+            return current || data;
         }
 
         function goBack() {
@@ -199,7 +199,7 @@
             return { ...data, children: filteredChildren };
         }
 
-        // Initial rendering
+        
         renderFileSystem(fileSystemData);
     </script>
 
